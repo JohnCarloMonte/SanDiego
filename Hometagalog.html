@@ -1,0 +1,849 @@
+<?php
+// Start the session
+session_start();
+
+// Check if the user is logged in
+if (!isset($_SESSION['username'])) {
+    // Redirect to Login.php if the user is not logged in
+    header("Location: Login.php");
+    exit();
+}
+
+// Retrieve the user's balance from the session
+$user_balance = isset($_SESSION['balance']) ? $_SESSION['balance'] : 0;
+
+// Optionally, you can format the balance
+$formatted_balance = number_format($user_balance, 2);
+
+// Retrieve user's email from the session
+$user_email = isset($_SESSION['email']) ? $_SESSION['email'] : 'Not Provided';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>San Diego Website</title>
+    <!-- Link to Google Fonts for Open Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <style>
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Enable smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            position: relative; /* To position background circles absolutely within the body */
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scroll due to circles */
+            background-color: #ffffff; /* Base background color */
+        }
+
+        /* Background Circles */
+        .background-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.6; /* Adjust opacity for overlapping effect */
+            z-index: -1; /* Ensure circles are behind all content */
+        }
+
+        /* First Circle */
+        .circle1 {
+            width: 150vw;
+            height: 700px;
+            background-color: #f9dd4e; /* Yellow */
+            bottom: 1700px;
+            left: 50%;
+            transform: translateX(-50%) translateY(50%);
+        }
+
+        /* Second Circle */
+        .circle2 {
+            width: 150vw;
+            height: 700px;
+            background-color: #f7e96c; /* Gold */
+            bottom: 1750px;
+            left: 50%;
+            transform: translateX(-50%) translateY(50%);
+            opacity: 1; /* Corrected opacity */
+        }
+
+        /* Third Circle */
+        .circle3 {
+            width: 150vw;
+            height: 700px;
+            background-color: #FFFCC9; /* Light Yellow */
+            bottom: 1800px;
+            left: 50%;
+            transform: translateX(-50%) translateY(50%);
+            opacity: 1; /* Corrected opacity */
+        }
+
+        /* Top Navbar container */
+        .navbar {
+            display: flex;
+            justify-content: space-between; /* Space between left, center, and right */
+            align-items: center;
+            padding: 10px 20px;
+            background-color: rgba(248, 249, 250, 0.9); /* Slight transparency to show background */
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000; /* Ensure navbar is on top */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+
+        /* Left Side of Navbar */
+        .nav-left {
+            flex: 1;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Space between buttons */
+        }
+
+        /* Center of Navbar */
+        .nav-center {
+            flex: 1;
+            text-align: center;
+        }
+
+        /* Right Side of Navbar */
+        .nav-right {
+            flex: 1;
+            text-align: right;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        /* Website name */
+        .site-name {
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            color: black;
+        }
+
+        /* Navigation links */
+        .nav-links,
+        .mobile-menu {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a,
+        .mobile-menu a {
+            text-decoration: none;
+            color: black;
+            font-size: 16px;
+            padding: 10px 15px;
+            transition: background-color 0.3s ease;
+            border-radius: 4px;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .nav-links a:hover,
+        .mobile-menu a:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Login button */
+        .login-btn {
+            background-color: #F5E071;
+            padding: 10px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .login-btn1 {
+            background-color: #F5E071;
+            padding: 10px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .login-btn:hover {
+            background-color: #e6d165;
+        }
+        .login-btn1:hover {
+            background-color: #e6d165;
+        }
+
+        /* Hamburger menu icon */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: black;
+            transition: all 0.3s ease;
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            background-color: rgba(248, 249, 250, 0.95); /* Slight transparency */
+            padding: 10px 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 999; /* Just below the navbar */
+        }
+
+        .mobile-menu a {
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        /* Show mobile menu when active */
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        /* Change hamburger to 'X' when active */
+        .hamburger.active div:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active div:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active div:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+
+            .navbar{
+                width: 80%
+            }
+            .nav-links {
+                display: none;
+            }
+
+            .login-btn {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            /* Adjust Login button inside mobile menu */
+            .mobile-menu .login-btn {
+                margin-top: 10px;
+                align-self: center;
+                padding: 10px 20px;
+                border-radius: 50px; /* More oval for better visibility */
+                width: fit-content;
+            }
+
+            /* Optional: Modify circle sizes and positions for mobile */
+            .circle1 {
+                width: 150vw;
+                height: 1000px;
+                bottom: 1700px;
+            }
+
+            .circle2 {
+                width: 150vw;
+                height: 750px;
+                bottom: 1750px;
+            }
+
+            .circle3 {
+                width: 150vw;
+                height: 500px;
+                bottom: 1800px;
+            }
+
+            /* Adjust Navbar Layout */
+            .navbar {
+                justify-content: space-between;
+            }
+
+            .nav-center {
+                text-align: left;
+            }
+
+            .nav-right {
+                text-align: right;
+            }
+        }
+
+        /* Optional: Content Container */
+        .content {
+            padding: 100px 20px 80px 20px; /* Top padding accounts for fixed navbar and bottom navbar */
+            min-height: 100vh;
+            position: relative;
+            z-index: 1; /* Ensure content is above background circles */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+
+        /* Heading Style */
+        #firsth1 {
+            font-weight: bolder;
+            text-align: center;
+            font-size: 2.5rem;
+            margin-top: 50px;
+            color: #333333;
+        }
+
+        /* Additional Content Styling */
+        .content p {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #555555;
+            margin-top: 20px;
+        }
+
+        /* Loan Application Box */
+        .loan-box {
+            border-radius: 20px;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 40px auto;
+        }
+
+        .loan-box h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        #loan-amount {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        #loan-slider {
+            width: 100%;
+        }
+
+        .installment-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .installment-btn {
+            flex: 1;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 1rem;
+        }
+
+        .installment-btn.active {
+            background-color: #F5E071;
+        }
+
+        .installment-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .loan-result {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .loan-result p {
+            font-size: 1.2rem;
+            color: #333333;
+        }
+
+        /* Apply Now Button */
+        .apply-btn {
+            display: block;
+            text-align: center;
+            background-color: #F5E071;
+            padding: 10px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            font-family: 'Open Sans', sans-serif;
+            margin: 0 auto;
+            width: 130px;
+        }
+
+        .apply-btn:hover {
+            background-color: #e6d165;
+        }
+
+        /* New Sections */
+
+        /* About Us Section */
+        .about-us {
+            background-color: #FFFCC9; /* Light Yellow */
+            padding: 40px 20px;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .about-us h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        .about-us p {
+            font-size: 1rem;
+            color: #555555;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* How to Loan Section */
+        .how-to-loan {
+            padding: 40px 20px;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .how-to-loan h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        .how-to-loan p {
+            font-size: 1rem;
+            color: #555555;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* How to Pay Section */
+        .how-to-pay {
+            background-color: #f7e96c; /* Gold */
+            padding: 40px 20px;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .how-to-pay h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        .how-to-pay p {
+            font-size: 1rem;
+            color: #555555;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 40px 20px;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .contact h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        .contact-info {
+            text-align: center;
+            font-size: 1rem;
+            color: #555555;
+            line-height: 1.6;
+        }
+
+        .contact-info p {
+            margin-bottom: 10px;
+        }
+
+
+
+        /* Focus States for Accessibility */
+        .pay-now-btn:focus,
+        .update-btn:focus,
+        .logout-btn:focus,
+        .site-name:focus,
+        .bottom-nav-btn:focus,
+        .nav-btn:focus {
+            outline: 2px solid #F5E071;
+        }
+
+        /* Loan Content Styling */
+        .main-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 40px; /* Space between columns */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Text Content Styling */
+        .text-content {
+            flex: 1;
+            min-width: 250px; /* Prevents the column from becoming too narrow */
+        }
+
+        /* Loan Content Styling */
+        .loan-content {
+            flex: 1;
+            min-width: 300px; /* Adjust based on loan box width */
+        }
+
+        /* Ensure Loan Box takes full width of its container */
+        .loan-box {
+            max-width: 100%; /* Overrides previous max-width for responsiveness */
+            margin: 0; /* Remove auto margins to align within flex container */
+        }
+
+        /* Footer Styling */
+        .footer {
+            background-color: rgba(248, 249, 250, 0.9); /* Match navbar background */
+            padding: 20px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+                /* Final Text */
+                .final-text {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #333333;
+            margin-top: 40px;
+            font-weight: bold;
+        }
+
+        /* Flag Container */
+        .flag-container {
+            justify-content: center;
+            display: flex;
+            gap: 20px; /* Space between flags */
+        }
+
+        /* Flag Links */
+        .flag-link {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .flag-link:hover,
+        .flag-link:focus {
+            transform: scale(1.1); /* Slightly enlarge on hover/focus */
+        }
+
+        /* Flag Icons */
+        .flag-icon {
+            width: 30px; /* Adjust size as needed */
+            height: auto;
+        }
+
+        /* Responsive Adjustments for Flags */
+        @media (max-width: 768px) {
+            .flag-icon {
+                width: 25px; /* Smaller flags on mobile */
+            }
+
+        }
+
+        @media (max-width: 480px) {
+            .flag-icon {
+                width: 20px; /* Even smaller flags on very small screens */
+            }
+        }
+        .logo-print {
+                display: block;
+                margin: 0 auto;
+                width: 150px; /* Adjust size as needed */
+            }
+    </style>
+</head>
+<body>
+    <!-- Background Circles -->
+    <div class="background-circle circle1"></div>
+    <div class="background-circle circle2"></div>
+    <div class="background-circle circle3"></div>
+
+    <!-- Top Navbar -->
+    <nav class="navbar">
+        <!-- Center of Navbar -->
+        <div class="nav-left">
+            <a href="#top" class="site-name">San Diego</a>
+        </div>
+        <!-- Navigation Links (Desktop) -->
+        <div class="nav-links">
+            <a href="#about-us">Sino kami</a>
+            <a href="#how-to-loan">Paano Umutang</a>
+            <a href="#how-to-pay">Paano Magbayad?</a>
+            <a href="#contact-us">Kontakin kami</a>
+        </div>
+
+        <!-- Login Button (Desktop) -->
+        <a href="Login.php" class="login-btn">Mag-login</a>
+
+        <!-- Hamburger Menu Icon (Mobile) -->
+        <div class="hamburger" id="hamburger" aria-label="Toggle navigation" role="button" tabindex="0">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="Login.php" class="login-btn1">Mag-Login</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Existing Main Content -->
+        <div class="main-container">
+            <!-- Text Content (Heading and Paragraph) -->
+            <div class="text-content">
+                <img src="logo.png" class="logo-print" alt="Logo">
+                <h1 id="firsth1">Pagtatag ng Tiwala, Pagtupad ng Pangarap.</h1>
+                <p>Maligayang pagdating sa San Diego! Nandito kami upang tulungan kang makamit ang iyong mga layuning pinansyal sa pamamagitan ng mga personalisadong solusyon sa pautang.</p>
+            </div>
+
+            <!-- Loan Application Box -->
+            <div class="loan-content">
+                <div class="loan-box">
+                    <h2>Halaga ng Uutangin</h2>
+                    <div class="slider-container">
+                        <span id="loan-amount">₱0.00</span>
+                        <input type="range" id="loan-slider" min="1000" max="20000" step="500" value="1000">
+                    </div>
+
+                    <h2>Installment</h2>
+                    <div class="installment-buttons">
+                        <button class="installment-btn active" data-months="1">1 Buwan</button>
+                        <button class="installment-btn" data-months="2">2 Buwan</button>
+                        <button class="installment-btn" data-months="3">3 Buwan</button>
+                        <button class="installment-btn" data-months="4">4 Buwan</button>
+                    </div>
+
+                    <div class="loan-result">
+                        <p>Total Amount: <span id="total-amount">₱0.00</span></p>
+                        <p>Daily Payment: <span id="daily-payment">₱0.00</span></p>
+                        <p>Weekly Payment: <span id="weekly-payment">₱0.00</span></p>
+                    </div>
+
+                    <a href="Signup.php" class="apply-btn">APPLY NOW</a>
+                </div>
+            </div>
+        </div>
+
+          <!-- About Us Section -->
+          <div class="about-us" id="about-us">
+            <h2>Tungkol sa San diego</h2>
+            <p>Maligayang pagdating sa San Diego! Nandito kami upang magbigay ng pinakamahusay na serbisyong pinansyal para sa ating komunidad.</p>
+            <p>Sa San Diego, naniniwala kami sa pagbuo ng pangmatagalang relasyon sa aming mga kliyente, sa pag-unawa ng kanilang mga layunin, at sa pagsuporta sa bawat hakbang sa daan sa interes na kasing baba ng 3%. Kung naghahanap ka man ng personal na pautang, pondo para sa negosyo, o mga oportunidad sa pamumuhunan, nandito kami upang tulungan kang makamit ang iyong mga pinansyal na hangarin.</p>
+        </div>
+
+        <!-- How to Loan Section -->
+        <div class="how-to-loan" id="how-to-loan">
+            <h2>Paano Umutang?</h2>
+            <p>Gumawa ng Account dito at i-upload ang iyong pagkakakilanlan, pagkatapos ay hintayin ang aming kumpirmasyon kung matagumpay ang iyong loan. </p>
+        </div>
+
+        <!-- How to Pay Section -->
+        <div class="how-to-pay" id="how-to-pay">
+            <h2>Paano Magbayad?</h2>
+            <p>Mas pinadali na ang pagbabayad ng iyong loan. Tumatanggap kami ng Gcash at PayMaya. Para sa cash na transaksyon, bumisita sa aming opisina.</p>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="contact" id="contact-us">
+            <h2>Kontakin kami</h2>
+            <div class="contact-info">
+                <p><strong>Email:</strong> <a href="mailto:SanDiego@loan.com">SanDiego@loan.com</a></p>
+                <p><strong>Contact No:</strong> 0909-000-0000</p>
+            </div>
+        </div>
+
+
+        <div class="flag-container">
+            <a href="Home.html" class="flag-link" aria-label="United States">
+                <img src="united-states.png" alt="United States Flag" class="flag-icon">
+            </a>
+            <a href="#" class="flag-link" aria-label="Philippines">
+                <img src="philippines.png" alt="Philippines Flag" class="flag-icon">
+            </a>
+        </div>
+
+    <!-- Optional JavaScript for Burger Menu Toggle and Loan Calculations -->
+    <script>
+        // Burger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event from bubbling up to window
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Allow keyboard access for hamburger
+        hamburger.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                hamburger.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+            }
+        });
+
+        // Close the mobile menu when clicking outside
+        window.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            }
+        });
+
+        // Loan Calculator Functionality
+        document.addEventListener("DOMContentLoaded", function() {
+    const loanSlider = document.getElementById('loan-slider');
+    const loanAmountDisplay = document.getElementById('loan-amount');
+    const totalAmountDisplay = document.getElementById('total-amount');
+        const dailyPaymentDisplay = document.getElementById('daily-payment');
+    const weeklyPaymentDisplay = document.getElementById('weekly-payment');
+    const installmentButtons = document.querySelectorAll('.installment-btn');
+    const applyLoanBtn = document.getElementById('apply-loan-btn');
+
+    let selectedMonths = 1; // Default selection
+    let interestRates = {
+        1: 0.03, // 3% for 1 month
+        2: 0.05, // 5% for 2 months
+        3: 0.08, // 8% for 3 months
+        4: 0.10  // 10% for 4 months
+    };
+
+    // Function to format number as currency
+    function formatCurrency(amount) {
+        return amount.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' });
+    }
+
+    // Update loan amount display and calculate total
+    function updateLoanAmount() {
+        const loanValue = parseInt(loanSlider.value);
+        loanAmountDisplay.textContent = formatCurrency(loanValue);
+
+        // Use the selected month's interest rate
+        const interestRate = interestRates[selectedMonths] || 0;
+        const totalAmount = loanValue + (loanValue * interestRate);
+        totalAmountDisplay.textContent = formatCurrency(totalAmount);
+
+
+                // Calculate daily and weekly payments
+      const dailyPayment = totalAmount / (30 * selectedMonths);
+        const weeklyPayment = totalAmount / (4 * selectedMonths);
+
+        // Update daily and weekly payment displays
+        dailyPaymentDisplay.textContent = formatCurrency(dailyPayment);
+        weeklyPaymentDisplay.textContent = formatCurrency(weeklyPayment);
+    }
+
+    // Initialize loan amount on page load
+    updateLoanAmount();
+
+    // Event listener for slider
+    loanSlider.addEventListener('input', updateLoanAmount);
+
+    // Event listeners for installment buttons
+    installmentButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove 'active' class from all buttons
+            installmentButtons.forEach(btn => btn.classList.remove('active'));
+            // Add 'active' class to the clicked button
+            button.classList.add('active');
+            // Update selected months
+            selectedMonths = parseInt(button.getAttribute('data-months'));
+            // Recalculate total amount
+            updateLoanAmount();
+        });
+    });
+
+    // Event listener for the APPLY LOAN button
+    applyLoanBtn.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default navigation
+
+        // Get the loan amount and selected months
+        const loanAmount = parseFloat(loanAmountDisplay.textContent.replace(/[^0-9.-]+/g, "")); // Extract numeric value
+        const totalAmount = parseFloat(totalAmountDisplay.textContent.replace(/[^0-9.-]+/g, "")); // Extract numeric value
+
+        // Redirect to confirmloan.php with parameters
+        window.location.href = `confirmloan.php?loanAmount=${loanAmount}&totalAmount=${totalAmount}&months=${selectedMonths}`;
+    });
+});
+    </script>
+</body>
+</html>

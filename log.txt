@@ -1,0 +1,107 @@
+Array
+(
+    [loanid] => 7
+    [status] => accepted
+)
+Array
+(
+    [loanid] => 7
+    [status] => accepted
+)
+Array
+(
+)
+Array
+(
+    [loan_id] => 1
+    [status] => accepted
+)
+Array
+(
+    [loan_id] => 1
+    [status] => accepted
+)
+Array
+(
+    [loan_id] => 1
+    [status] => accepted
+)
+Array
+(
+    [loan_id] => 1
+    [status] => accepted
+)
+Array
+(
+    [loanid] => 7
+    [status] => accepted
+)
+Array
+(
+    [loanid] => 7
+    [status] => accepted
+)
+Array
+(
+)
+Array
+(
+    [loan_id] => 7
+    [status] => accepted
+)
+Array
+(
+)
+Array
+(
+    [loanid] => 8
+    [status] => rejected
+)
+Array
+(
+)
+Array
+(
+    [loan_id] => 7
+    [status] => accepted
+)
+Array
+(
+    [loan_id] => 7
+    [status] => accepted
+)
+Array
+(
+    [loan_id] => 7
+    [status] => accepted
+)
+Array
+(
+    [loan_id] => 7
+    [status] => accepted
+)
+Array
+(
+    [loan_id] => 7
+    [status] => accepted
+)
+Array
+(
+    [loan_id] => 1
+    [status] => accepted
+)
+Array
+(
+    [loan_id] => 7
+    [status] => accepted
+)
+Array
+(
+    [loanid] => 8
+    [status] => accepted
+)
+Array
+(
+    [loanid] => 8
+    [status] => accepted
+)

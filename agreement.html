@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Agreement Terms and Conditions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1, h2 {
+            color: #F5E071;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: black;
+            border: 1px solid #F5E071;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        .back-link:hover {
+            background-color: #e6d165;
+            color: black;
+        }
+        .logo-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    max-width: 150px;
+    height: auto;
+}
+
+        /* Background Circles */
+        .background-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.6; /* Adjust opacity for overlapping effect */
+            z-index: -1; /* Ensure circles are behind all content */
+        }
+
+        /* First Circle */
+        .circle1 {
+            width: 150vw;
+            height: 700px;
+            background-color: #f9dd4e; /* Yellow */
+            bottom: 1200px;
+            left: 50%;
+            transform: translateX(-50%) translateY(50%);
+            opacity: 0.6; /* Corrected opacity */
+        }
+
+        /* Second Circle */
+        .circle2 {
+            width: 150vw;
+            height: 700px;
+            background-color: #f7e96c; /* Gold */
+            bottom: 1150px;
+            left: 50%;
+            transform: translateX(-50%) translateY(50%);
+            opacity: 1; /* Corrected opacity */
+        }
+
+        /* Third Circle */
+        .circle3 {
+            width: 150vw;
+            height: 600px;
+            background-color: #FFFCC9; /* Light Yellow */
+            bottom: 1100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(50%);
+            opacity: 1; /* Corrected opacity */
+        }
+
+    </style>
+</head>
+<body>
+        <!-- Background Circles -->
+        <div class="background-circle circle1"></div>
+        <div class="background-circle circle2"></div>
+        <div class="background-circle circle3"></div>
+    <div class="container">
+        <div class="logo-container">
+            <img src="logo.jpg" alt="Company Logo" class="logo">
+        </div>
+        
+        <h1>Loan Agreement Terms and Conditions</h1>
+        <p>Please carefully read these terms and conditions before proceeding with your loan application.</p>
+
+        <div class="section">
+            <h2>1. Loan Amount and Interest</h2>
+            <p>The loan amount you request will be subject to an interest rate based on the selected installment period:</p>
+            <ul>
+                <li>1 Month: 3%</li>
+                <li>2 Months: 5%</li>
+                <li>3 Months: 8%</li>
+                <li>4 Months: 10%</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>2. Repayment Schedule</h2>
+            <p>You agree to repay the loan amount according to the selected repayment schedule:</p>
+            <ul>
+                <li><strong>Daily Payments:</strong> Divided by 30 days for each month in the installment period.</li>
+                <li><strong>Weekly Payments:</strong> Divided by 4 weeks for each month in the installment period.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. Late Payment Fees</h2>
+            <p>If payments are not made on time, a penalty fee of 5% of the outstanding balance will be charged for each overdue month.</p>
+        </div>
+
+        <div class="section">
+            <h2>4. Loan Default</h2>
+            <p>Failure to repay the loan in full by the agreed term will result in loan default. The lender reserves the right to take necessary legal action to recover the outstanding amount.</p>
+        </div>
+
+        <div class="section">
+            <h2>5. Data Privacy</h2>
+            <p>Your personal and financial information will be used solely for loan processing and will not be shared with unauthorized third parties.</p>
+        </div>
+
+        <div class="section">
+            <h2>6. Borrower Responsibilities</h2>
+            <p>As the borrower, you agree to provide accurate information, adhere to the repayment schedule, and notify the lender of any changes in your financial situation.</p>
+        </div>
+
+        <a href="mainpage.php" class="back-link">Back to Loan Application</a>
+    </div>
+</body>
+</html>
