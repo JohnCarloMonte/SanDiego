@@ -1,6 +1,6 @@
 <?php
 
-$host = 'localhost';           // Database host (usually 'localhost')
+$host = 'db';           // Database host (usually 'localhost')
 $db   = 'sandiegodatabase';    // Name of your database
 $username = 'root';    // Your database username
 $password = '';    // Your database password
